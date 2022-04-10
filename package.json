@@ -1,0 +1,35 @@
+{
+  "name": "app-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lerna-bootstrap": "lerna bootstrap",
+    "lerna-clean": "lerna clean",
+    "build": "lerna run build",
+    "serve-built": "concurrently \"npm:serve-built-*\"",
+    "serve-built-root": "node ./http-server --rewrite-paths",
+    "serve-built-react": "npx http-server -p 3000 ./apps/react/build/",
+    "serve-built-vue": "npx http-server -p 8081 ./apps/vue/dist/",
+    "serve-built-svelte": "npx http-server -p 8181 ./apps/svelte/dist/",
+    "start-dev": "concurrently \"npm:start-dev-*\"",
+    "start-dev-root": "node ./http-server",
+    "start-dev-common": "cd ./apps/common && npm run tsc-watch",
+    "start-dev-react": "cd ./apps/react && npm run start",
+    "start-dev-vue": "cd ./apps/vue && npm run serve",
+    "start-dev-svelte": "cd ./apps/svelte && npm run dev"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "express": "^4.17.3",
+    "http-proxy-middleware": "^2.0.4",
+    "http-server": "^14.1.0",
+    "open": "^8.4.0"
+  }
+}

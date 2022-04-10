@@ -1,0 +1,53 @@
+{
+  "name": "app-vue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve  --port 8081",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "common": "1.0.0",
+    "core-js": "^3.21.1",
+    "vue": "^3.2.31"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "@vue/cli-plugin-babel": "~5.0.4",
+    "@vue/cli-plugin-eslint": "~5.0.4",
+    "@vue/cli-plugin-typescript": "^5.0.4",
+    "@vue/cli-service": "~5.0.4",
+    "@vue/compiler-sfc": "^3.2.31",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-vue": "^8.6.0",
+    "typescript": "~4.6.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/typescript"
+    ],
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "error",
+      "vue/multi-word-component-names": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

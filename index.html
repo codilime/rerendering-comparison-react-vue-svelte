@@ -1,0 +1,118 @@
+<html>
+<style>
+
+    :root {
+        --spacing: 10px;
+        accent-color: #A3ED00;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    body {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+    }
+
+    iframe {
+        border: none;
+        background-color: #fff;
+    }
+
+    .app {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background-color: #253746;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: calc(2 * var(--spacing));
+        padding: 0 10px;
+        height: 40px;
+        color: #fff;
+
+    }
+
+    .matrix {
+        display: grid;
+        align-items: stretch;
+        justify-items: stretch;
+        flex: 1 1 0;
+        gap: var(--spacing);
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        background-color: #BEC3C8;
+    }
+
+</style>
+<title>Comparison</title>
+<body>
+
+<div class="app">
+    <div class="toolbar">
+        <label>Update Level
+            <select id="updateLevel" value="STATE">
+                <option value="STATE">STATE</option>
+                <option value="ARRAY">ARRAY</option>
+                <option value="ITEM">ITEM</option>
+                <option value="VALUE">VALUE</option>
+            </select>
+        </label>
+
+        <button id="clearAllLogs">❌ Clear All Logs</button>
+
+    </div>
+
+    <div class="matrix">
+        <iframe data-src="apps/react" data-hash="#/use-state"></iframe>
+        <iframe data-src="apps/react" data-hash="#/mobx"></iframe>
+        <iframe data-src="apps/vue/"></iframe>
+        <iframe data-src="apps/svelte/"></iframe>
+    </div>
+</div>
+
+
+<script>
+    const params = {
+        updateLevel: 'STATE',
+    }
+
+    function updateIframes() {
+        document.querySelectorAll('iframe').forEach(iframe => {
+            const src = iframe.getAttribute('data-src');
+            const hash = iframe.getAttribute('data-hash') || '';
+            const location = `${src}?${Object.entries(params).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')}${hash}`;
+            iframe.src = location;
+        })
+    }
+
+    document.getElementById('updateLevel').addEventListener('change', (event) => {
+        params.updateLevel = event.target.value;
+        updateIframes()
+    })
+
+    document.getElementById('clearAllLogs').addEventListener('click', () => {
+        document.querySelectorAll('iframe').forEach(({contentWindow}) => contentWindow.postMessage({command: 'clearLog'}))
+    })
+
+    updateIframes();
+</script>
+
+</body>
+</html>
