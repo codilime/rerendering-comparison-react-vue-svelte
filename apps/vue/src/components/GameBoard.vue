@@ -1,22 +1,3 @@
-<template>
-  <section>
-    <h1>Vue  <span className="version">3.2.31</span></h1>
-
-    <div class="game-board"
-         :style="{
-             gridTemplateColumns: `repeat(${BOARD_SIZE}, 40px)`,
-             gridTemplateRows: `repeat(${BOARD_SIZE}, 40px)`
-         }">
-      <Square v-for="item in gameState.squares"
-              :key="item.index"
-              :item="item"
-              @square-click="onSquareClick"
-      />
-    </div>
-
-  </section>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Square from '@/components/Square.vue'
@@ -39,41 +20,54 @@ export default defineComponent({
     onSquareClick (clickedSquare: SquareItem) {
       log('--- onSquareClick ---')
 
+      const gameState = this.gameState;
+
       switch (UPDATE_LEVEL) {
         case 'VALUE': {
-          clickedSquare.value = this.gameState.nextPlayer
-          this.gameState.nextPlayer = this.gameState.nextPlayer === 'O' ? 'X' : 'O'
-          break
+          clickedSquare.value = gameState.nextPlayer;
+          gameState.nextPlayer = gameState.nextPlayer === 'O' ? 'X' : 'O';
+          break;
         }
 
         case 'ITEM': {
-          const clickedSquareArrayIndex = this.gameState.squares.findIndex(square => square.index === clickedSquare.index)
-          this.gameState.squares.splice(clickedSquareArrayIndex, 1, {
+          const clickedSquareArrayIndex = gameState.squares
+              .findIndex(square => square.index === clickedSquare.index);
+
+          gameState.squares[clickedSquareArrayIndex] = {
             index: clickedSquare.index,
-            value: this.gameState.nextPlayer
-          })
-          this.gameState.nextPlayer = this.gameState.nextPlayer === 'O' ? 'X' : 'O'
-          break
+            value: gameState.nextPlayer,
+          };
+
+          // or
+          // gameState.squares.splice(clickedSquareArrayIndex, 1, {
+          //   index: clickedSquare.index,
+          //   value: gameState.nextPlayer,
+          // });
+
+          gameState.nextPlayer = gameState.nextPlayer === 'O' ? 'X' : 'O';
+          break;
         }
 
         case 'ARRAY': {
-          this.gameState.squares = this.gameState.squares.map(square => square === clickedSquare ? {
-            ...square,
-            value: this.gameState.nextPlayer
-          } : square)
-          this.gameState.nextPlayer = this.gameState.nextPlayer === 'O' ? 'X' : 'O'
-          break
+          gameState.squares = gameState.squares.map(square =>
+              square === clickedSquare
+                  ? { ...square, value: gameState.nextPlayer }
+                  : square
+          );
+          gameState.nextPlayer = gameState.nextPlayer === 'O' ? 'X' : 'O';
+          break;
         }
 
         case 'STATE': {
           this.gameState = {
-            squares: this.gameState.squares.map(square => square === clickedSquare ? {
-              ...square,
-              value: this.gameState.nextPlayer
-            } : square),
-            nextPlayer: this.gameState.nextPlayer === 'O' ? 'X' : 'O'
-          }
-          break
+            squares: gameState.squares.map(square =>
+                square === clickedSquare
+                    ? { ...square, value: gameState.nextPlayer }
+                    : square
+            ),
+            nextPlayer: gameState.nextPlayer === 'O' ? 'X' : 'O',
+          };
+          break;
         }
       }
     }
@@ -88,4 +82,19 @@ export default defineComponent({
 })
 
 </script>
+
+<template>
+  <div class="game-board"
+       :style="{
+             gridTemplateColumns: `repeat(${BOARD_SIZE}, 40px)`,
+             gridTemplateRows: `repeat(${BOARD_SIZE}, 40px)`
+         }">
+    <Square v-for="item in gameState.squares"
+            :key="item.index"
+            :item="item"
+            @square-click="onSquareClick"
+    />
+  </div>
+</template>
+
 <style src="common/css/styles.css" />

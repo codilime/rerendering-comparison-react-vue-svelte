@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <GameBoard />
+    <section>
+      <h1>Vue  <span className="version">3.2.31</span></h1>
+      <GameBoard />
+    </section>
   </div>
 </template>
 

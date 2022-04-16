@@ -7,25 +7,21 @@
 
   const gameStore = createGameStoreLevelValue();
 
-  afterUpdate(()=>{
+  afterUpdate(() => {
     log('[Render] GameBoard')
   })
 
-  const onClick = (item)=> {
+  const onClick = (item) => {
     log('--- onSquareClick ---');
     gameStore.onClickItem(item);
   }
-
-
 </script>
 
-<section>
-    <div class="game-board"
-         style:grid-template-columns={`repeat(${BOARD_SIZE}, 40px`}
-         style:grid-template-rows={`repeat(${BOARD_SIZE}, 40px`}>
-        {#each gameStore.state.squares as item}
-            <Square {item} on:click={() => onClick(item)} />
-        {/each}
+<div class="game-board"
+     style:grid-template-columns={`repeat(${BOARD_SIZE}, 40px`}
+     style:grid-template-rows={`repeat(${BOARD_SIZE}, 40px`}>
+    {#each gameStore.gameState.squares as item}
+        <Square {item} on:click={() => onClick(item)}/>
+    {/each}
 
-    </div>
-</section>
+</div>
