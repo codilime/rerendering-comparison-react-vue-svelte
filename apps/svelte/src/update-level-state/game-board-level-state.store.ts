@@ -2,10 +2,7 @@ import { writable } from "svelte/store";
 import { INITIAL_STATE, type SquareItem } from "common";
 
 export const createGameStoreLevelState = () => ({
-  gameState: writable({
-    nextPlayer: INITIAL_STATE.nextPlayer,
-    squares: INITIAL_STATE.squares,
-  }),
+  gameState: writable(INITIAL_STATE),
   onClickItem(clickedSquare: SquareItem) {
     this.gameState.update(gameState => ({
       ...gameState,
