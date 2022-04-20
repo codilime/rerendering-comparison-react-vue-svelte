@@ -1,5 +1,4 @@
 export declare const BOARD_SIZE = 3;
-export declare const UPDATE_LEVEL: UpdateLevel;
 /**
  *   {
  *      nextPlayer: 'O',
@@ -14,7 +13,10 @@ export declare const UPDATE_LEVEL: UpdateLevel;
  *   };
  */
 export declare const INITIAL_STATE: GameState;
-export declare function createSquareIndex(rowIndex: number, squareIndex: number): string;
+export declare function createSquareIndex(rowIndex: number, colIndex: number): string;
+export declare const UPDATE_LEVEL: "STATE" | "ARRAY" | "ITEM" | "VALUE";
+export declare const MEMO_ENABLED: boolean;
+export declare const USE_CALLBACK_ENABLED: boolean;
 declare type SearchParams = {
     updateLevel: UpdateLevel;
     memoEnabled: boolean;
@@ -22,7 +24,10 @@ declare type SearchParams = {
 };
 export declare function getSearchParams(): SearchParams;
 export declare function log(...args: any[]): void;
-declare type UpdateLevel = 'VALUE' | 'ITEM' | 'ARRAY' | 'STATE';
+export declare function toggleMemoEnabled(): void;
+export declare function toggleUseCallbackEnabled(): void;
+declare const UpdateLevels: readonly ["STATE", "ARRAY", "ITEM", "VALUE"];
+declare type UpdateLevel = typeof UpdateLevels[number];
 export declare type SquareItem = {
     index: string;
     value: string;

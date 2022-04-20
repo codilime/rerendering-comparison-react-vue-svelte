@@ -32,6 +32,10 @@ export function createSquareIndex(rowIndex: number, colIndex: number) {
 }
 
 
+
+
+
+
 export const UPDATE_LEVEL = getSearchParams().updateLevel;
 export const MEMO_ENABLED = getSearchParams().memoEnabled;
 export const USE_CALLBACK_ENABLED = getSearchParams().useCallbackEnabled;

@@ -1,5 +1,4 @@
 export const BOARD_SIZE = 3;
-export const UPDATE_LEVEL = getSearchParams().updateLevel;
 /**
  *   {
  *      nextPlayer: 'O',
@@ -25,9 +24,12 @@ function createGameState() {
         }).flat()
     };
 }
-export function createSquareIndex(rowIndex, squareIndex) {
-    return `${rowIndex}x${squareIndex}`;
+export function createSquareIndex(rowIndex, colIndex) {
+    return `${rowIndex}x${colIndex}`;
 }
+export const UPDATE_LEVEL = getSearchParams().updateLevel;
+export const MEMO_ENABLED = getSearchParams().memoEnabled;
+export const USE_CALLBACK_ENABLED = getSearchParams().useCallbackEnabled;
 export function getSearchParams() {
     const searchParams = new URLSearchParams(location.search);
     return {
@@ -70,6 +72,21 @@ export function log(...args) {
         loggerContainer.scrollTop = loggerContainer.scrollHeight;
     }
 }
+export function toggleMemoEnabled() {
+    const currentUrl = new URL(document.location.href);
+    currentUrl.searchParams.set('memoEnabled', MEMO_ENABLED ? 'false' : 'true');
+    document.location.href = currentUrl.href;
+}
+export function toggleUseCallbackEnabled() {
+    const currentUrl = new URL(document.location.href);
+    currentUrl.searchParams.set('useCallbackEnabled', USE_CALLBACK_ENABLED ? 'false' : 'true');
+    document.location.href = currentUrl.href;
+}
+function updateUpdateLevel(level) {
+    const currentUrl = new URL(document.location.href);
+    currentUrl.searchParams.set('updateLevel', level);
+    document.location.href = currentUrl.href;
+}
 //@ts-ignore
 window.addEventListener('message', (event) => {
     try {
@@ -80,18 +97,36 @@ window.addEventListener('message', (event) => {
     catch (e) {
     }
 });
+const UpdateLevels = ['STATE', 'ARRAY', 'ITEM', 'VALUE'];
 (() => {
     if (window.parent !== window) {
         const openInNewPageEl = document.createElement('a');
         openInNewPageEl.setAttribute('href', location.href);
         openInNewPageEl.setAttribute('target', '_blank');
-        openInNewPageEl.innerText = 'Open in new tab';
-        Object.assign(openInNewPageEl.style, {
-            position: 'fixed',
-            top: '10px',
-            left: '10px',
-        });
+        openInNewPageEl.innerText = 'As new tab ⬈';
+        openInNewPageEl.classList.add('open-in-new-tab');
         document.body.appendChild(openInNewPageEl);
+    }
+    else {
+        const label = document.createElement('label');
+        label.classList.add('open-in-new-tab');
+        label.innerHTML = 'Update Level ';
+        const select = document.createElement('select');
+        UpdateLevels.forEach(level => {
+            const option = document.createElement('option');
+            option.setAttribute('value', level);
+            if (level === UPDATE_LEVEL) {
+                option.setAttribute('selected', 'selected');
+            }
+            option.innerHTML = level;
+            select.appendChild(option);
+        });
+        select.addEventListener('change', (event) => {
+            // @ts-ignore
+            updateUpdateLevel(event.target.value);
+        });
+        label.appendChild(select);
+        document.body.appendChild(label);
     }
 })();
 //# sourceMappingURL=index.js.map
