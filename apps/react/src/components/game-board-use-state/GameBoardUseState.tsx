@@ -1,15 +1,6 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
-import { Square, SquareItem, SquareWithMemo } from '../square/Square';
-import {
-  BOARD_SIZE,
-  INITIAL_STATE,
-  log,
-  MEMO_ENABLED,
-  toggleMemoEnabled,
-  toggleUseCallbackEnabled,
-  UPDATE_LEVEL,
-  USE_CALLBACK_ENABLED,
-} from 'common';
+import React, {FunctionComponent, useCallback, useState} from 'react';
+import {Square} from './Square';
+import {BOARD_SIZE, INITIAL_STATE, log, SquareItem, UPDATE_LEVEL,} from 'common';
 
 export const GameBoardUseState: FunctionComponent = () => {
 
@@ -20,17 +11,13 @@ export const GameBoardUseState: FunctionComponent = () => {
     setGameState(gameState => {
       return {
         squares: gameState.squares.map(square => square === clickedSquare
-          ? { ...square, value: gameState.nextPlayer }
+          ? {...square, value: gameState.nextPlayer}
           : square
         ),
         nextPlayer: gameState.nextPlayer === 'O' ? 'X' : 'O',
       };
     });
   };
-  const onSquareClickWrapped = useCallback(onSquareClick, [setGameState]);
-
-  const SquareComponent = MEMO_ENABLED ? SquareWithMemo : Square;
-  const onClick = USE_CALLBACK_ENABLED ? onSquareClickWrapped : onSquareClick;
 
   if (UPDATE_LEVEL !== 'STATE') {
     return <div className="not-possible">
@@ -49,23 +36,11 @@ export const GameBoardUseState: FunctionComponent = () => {
            gridTemplateColumns: `repeat(${BOARD_SIZE}, 40px)`,
            gridTemplateRows: `repeat(${BOARD_SIZE}, 40px)`,
          }}>
-      {gameState.squares.map(square => <SquareComponent
+      {gameState.squares.map(square => <Square
         key={square.index}
-        onClick={onClick}
+        onClick={onSquareClick}
         item={square}
       />)}
-    </div>
-
-    <div>
-      <label style={{ marginTop: 20, display: 'block' }}>
-        <input type="checkbox" checked={MEMO_ENABLED} onChange={toggleMemoEnabled}/>
-        memo(Square)
-      </label>
-
-      <label style={{ marginTop: 20, display: 'block' }}>
-        <input type="checkbox" checked={USE_CALLBACK_ENABLED} onChange={toggleUseCallbackEnabled}/>
-        useCallback(onSquareClick)
-      </label>
     </div>
   </>;
 };
