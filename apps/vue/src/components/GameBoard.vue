@@ -11,7 +11,6 @@ export default defineComponent({
   data () {
     return {
       BOARD_SIZE,
-      UPDATE_LEVEL,
       gameState: INITIAL_STATE
     }
   },
